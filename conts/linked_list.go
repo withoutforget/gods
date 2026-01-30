@@ -4,15 +4,19 @@ import (
 	"iter"
 )
 
-type node[T any] struct {
+type LinkedListNode[T any] struct {
 	value T
-	prev  *node[T]
-	next  *node[T]
+	prev  *LinkedListNode[T]
+	next  *LinkedListNode[T]
+}
+
+func (this *LinkedListNode[T]) GetValue() *T {
+	return &this.value
 }
 
 type LinkedList[T any] struct {
-	head *node[T]
-	tail *node[T]
+	head *LinkedListNode[T]
+	tail *LinkedListNode[T]
 	sz   int
 }
 
@@ -28,7 +32,7 @@ func (this *LinkedList[T]) checkIdx(idx int) {
 }
 
 func (this *LinkedList[T]) PushBack(value T) {
-	var node = node[T]{value: value}
+	var node = LinkedListNode[T]{value: value}
 	if this.head == nil {
 		this.head = &node
 		this.tail = this.head
@@ -42,7 +46,7 @@ func (this *LinkedList[T]) PushBack(value T) {
 }
 
 func (this *LinkedList[T]) PushFront(value T) {
-	var node = node[T]{value: value}
+	var node = LinkedListNode[T]{value: value}
 	if this.head == nil {
 		this.head = &node
 		this.tail = this.head
@@ -118,6 +122,53 @@ func (this *LinkedList[T]) Get(idx int) *T {
 		}
 
 		return &curr.value
+	}
+}
+
+func (this *LinkedList[T]) Erase(node *LinkedListNode[T]) {
+	prev, next := node.prev, node.next
+	if prev != nil {
+		prev.next = next
+	} else {
+		this.head = next
+	}
+	if next != nil {
+		next.prev = prev
+	} else {
+		this.tail = prev
+	}
+	node.prev = nil
+	node.next = nil
+}
+
+func (this *LinkedList[T]) Front() *LinkedListNode[T] {
+	return this.head
+}
+func (this *LinkedList[T]) Back() *LinkedListNode[T] {
+	return this.tail
+}
+
+func (this *LinkedList[T]) AtNode(idx int) *LinkedListNode[T] {
+	this.checkIdx(idx)
+	return this.GetNode(idx)
+}
+
+func (this *LinkedList[T]) GetNode(idx int) *LinkedListNode[T] {
+	mid := this.sz / 2
+	if idx < mid {
+		curr := this.head
+		for range idx {
+			curr = curr.next
+		}
+
+		return curr
+	} else {
+		curr := this.tail
+		for v := this.sz - 1 - idx; v > 0; v-- {
+			curr = curr.prev
+		}
+
+		return curr
 	}
 }
 
