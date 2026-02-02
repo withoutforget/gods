@@ -1,4 +1,4 @@
-package conts
+package tree
 
 import "iter"
 

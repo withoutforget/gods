@@ -1,4 +1,4 @@
-package conts
+package tree
 
 import (
 	godsUtils "github.com/withoutforget/gods/internal/utils"

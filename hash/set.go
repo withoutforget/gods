@@ -1,4 +1,4 @@
-package conts
+package hash
 
 type Set[T comparable] struct {
 	data HashMap[T, struct{}]

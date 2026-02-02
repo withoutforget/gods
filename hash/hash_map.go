@@ -1,4 +1,4 @@
-package conts
+package hash
 
 import (
 	"hash/maphash"
