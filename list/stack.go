@@ -1,4 +1,4 @@
-package conts
+package list
 
 type Stack[T any] struct {
 	data List[T]

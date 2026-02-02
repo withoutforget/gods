@@ -1,4 +1,4 @@
-package conts
+package list
 
 type Queue[T any] struct {
 	data LinkedList[T]

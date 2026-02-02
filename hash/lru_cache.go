@@ -1,6 +1,10 @@
 package conts
 
-import "iter"
+import (
+	"iter"
+
+	"github.com/withoutforget/gods/list"
+)
 
 type nodeState int
 
@@ -16,8 +20,8 @@ type lruNode[K comparable, T any] struct {
 }
 
 type LRU[K comparable, V any] struct {
-	linkedList LinkedList[lruNode[K, V]]
-	hashMap    HashMap[K, *LinkedListNode[lruNode[K, V]]]
+	linkedList list.LinkedList[lruNode[K, V]]
+	hashMap    HashMap[K, *list.LinkedListNode[lruNode[K, V]]]
 	cap        int
 }
 
@@ -32,7 +36,7 @@ func NewLRU[K comparable, V any](cap int) *LRU[K, V] {
 }
 
 func (this *LRU[K, V]) Put(key K, value V) {
-	var node *LinkedListNode[lruNode[K, V]]
+	var node *list.LinkedListNode[lruNode[K, V]]
 	n := this.hashMap.Get(key)
 	if n == nil {
 		node = this.linkedList.Back()

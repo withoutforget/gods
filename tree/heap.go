@@ -1,9 +1,12 @@
 package conts
 
-import "github.com/withoutforget/gods/clibutils"
+import (
+	godsUtils "github.com/withoutforget/gods/internal/utils"
+	"github.com/withoutforget/gods/list"
+)
 
 type Heap[T comparable] struct {
-	data List[T]
+	data list.List[T]
 	comp func(a, b T) bool // less
 }
 
@@ -59,7 +62,7 @@ func (this *Heap[T]) siftDown(idx int) {
 
 	childPtr := this.data.Get(targetChild)
 	if this.comp(*childPtr, *parent) {
-		*parent, *childPtr = clibutils.Swap(*parent, *childPtr)
+		*parent, *childPtr = godsUtils.Swap(*parent, *childPtr)
 		this.siftDown(targetChild)
 	}
 }
@@ -71,7 +74,7 @@ func (this *Heap[T]) siftUP(idx int) {
 	}
 	a, b := this.data.Get(idx), this.data.Get(p)
 	if this.comp(*a, *b) {
-		*a, *b = clibutils.Swap(*a, *b)
+		*a, *b = godsUtils.Swap(*a, *b)
 		this.siftUP(p)
 	}
 }
@@ -91,7 +94,7 @@ func (this *Heap[T]) RemoveAt(idx int) T {
 		return value
 	}
 	a, b := this.data.Get(bIdx), this.data.Get(eIdx)
-	*a, *b = clibutils.Swap(*a, *b)
+	*a, *b = godsUtils.Swap(*a, *b)
 	value := *this.data.PopBack()
 	this.siftDown(0)
 	return value

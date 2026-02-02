@@ -4,7 +4,8 @@ import (
 	"hash/maphash"
 	"iter"
 
-	"github.com/withoutforget/gods/clibutils"
+	godsUtils "github.com/withoutforget/gods/internal/utils"
+	"github.com/withoutforget/gods/list"
 )
 
 type mapState = int32
@@ -26,7 +27,7 @@ func defaulthashNode[K comparable, V any]() hashNode[K, V] {
 }
 
 type HashMap[K comparable, V any] struct {
-	data         List[hashNode[K, V]]
+	data         list.List[hashNode[K, V]]
 	elementCount int
 	deletedCount int
 	seed         maphash.Seed
@@ -38,7 +39,7 @@ func NewHashMap[K comparable, V any]() HashMap[K, V] {
 
 func newHashMap[K comparable, V any](seed maphash.Seed, cap int) HashMap[K, V] {
 	var h = HashMap[K, V]{
-		data: NewList[hashNode[K, V]](cap),
+		data: list.NewList[hashNode[K, V]](cap),
 		seed: seed,
 	}
 	for range cap {
@@ -59,7 +60,7 @@ func (this *HashMap[K, V]) TombStoneFactor() float32 {
 }
 
 func (this *HashMap[K, V]) hash(key K) int {
-	var h = clibutils.HashFunction(this.seed, key)
+	var h = godsUtils.HashFunction(this.seed, key)
 	if h < 0 {
 		h = -h
 	}
@@ -67,9 +68,9 @@ func (this *HashMap[K, V]) hash(key K) int {
 }
 
 func (this *HashMap[K, V]) swap(rhs *HashMap[K, V]) {
-	this.data, rhs.data = clibutils.Swap(this.data, rhs.data)
-	this.elementCount, rhs.elementCount = clibutils.Swap(this.elementCount, rhs.elementCount)
-	this.deletedCount, rhs.deletedCount = clibutils.Swap(this.deletedCount, rhs.deletedCount)
+	this.data, rhs.data = godsUtils.Swap(this.data, rhs.data)
+	this.elementCount, rhs.elementCount = godsUtils.Swap(this.elementCount, rhs.elementCount)
+	this.deletedCount, rhs.deletedCount = godsUtils.Swap(this.deletedCount, rhs.deletedCount)
 }
 
 func (this *HashMap[K, V]) realloc(newCap int) {
